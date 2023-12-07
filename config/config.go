@@ -9,10 +9,11 @@ import (
 )
 
 var (
-	Port      string
-	JwtSecret string
-	Username  string
-	Password  string
+	Port           string
+	JwtSecret      string
+	Username       string
+	Password       string
+	KubeZNamespace string
 )
 
 func logsinit() {

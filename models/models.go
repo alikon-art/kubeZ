@@ -1,17 +1,23 @@
 package models
 
-type ReturnDatas struct {
-	Status  int                    `json:"status"`
+// 返回数据的基本结构体
+type ReturnData struct {
+	Status  string                 `json:"status"`
 	Message string                 `json:"message"`
 	Data    map[string]interface{} `json:"data"`
 }
 
-// 默认状态为200,message为ok,data为空
-func NewRetunData() ReturnDatas {
-	returnData := ReturnDatas{
-		Status:  200,
-		Message: "ok",
-		Data:    make(map[string]interface{}),
-	}
-	return returnData
+// 处理集群数据的基本结构体
+type ClusterData struct {
+	ClusterID   string                 `json:"clusterid"`
+	ClusterName string                 `json:"clustername"`
+	Annotations map[string]interface{} `json:"annotations"`
+}
+
+// 带有kubeconfig的结构体
+type ClusterDataWConfig struct {
+	ClusterID     string                 `json:"clusterid"`
+	ClusterName   string                 `json:"clustername"`
+	Annotations   map[string]interface{} `json:"annotations"`
+	ClusterConfig string                 `json:"clusterconfig"`
 }
