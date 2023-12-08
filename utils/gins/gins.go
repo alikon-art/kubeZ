@@ -23,7 +23,7 @@ func BoundJson(c *gin.Context, any interface{}) (err error) {
 	return err
 }
 
-func ReturnData(c *gin.Context, status string, msg string, data map[string]interface{}) {
+func ReturnData(c *gin.Context, status string, msg string, data interface{}) {
 	returnData := models.ReturnData{
 		Status:  status,
 		Message: msg,
@@ -81,6 +81,7 @@ func Struct2MapInterface(c *gin.Context, s interface{}) (m map[string]interface{
 	m, err = jsons.Struct2MapInterface(s)
 	if err != nil {
 		ReturnErrorData(c, "500", "结构体转mapstr失败", err)
+		c.Abort()
 	}
 	return m, err
 }

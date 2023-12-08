@@ -32,10 +32,10 @@ func init() {
 
 	}
 	serverVersion, err := InclusterKubeSet.Discovery().ServerVersion()
-	if err != nil {
-		logs.Error(map[string]interface{}{"error": err.Error()}, "获取集群版本失败,请检查网络或集群配置信息")
-	} else {
+	if err == nil {
 		logs.Info(nil, "集群版本 : "+serverVersion.String())
+	} else {
+		logs.Error(map[string]interface{}{"error": err.Error()}, "获取集群版本失败,请检查网络或集群配置信息")
 	}
 
 }

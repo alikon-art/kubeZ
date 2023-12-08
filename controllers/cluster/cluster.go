@@ -111,19 +111,35 @@ func Update(c *gin.Context) {
 }
 
 func List(c *gin.Context) {
-	gins.BoundJson(c, &clusterDataWConfig)
-	clientset, err := gins.InitKubeClient(c, clusterDataWConfig.ClusterConfig)
-	if err != nil {
-		c.Abort()
+	// 获取查询的namespace
+	namespace := c.Query("namespace")
+
+	// 查询label
+	listOptions := metav1.ListOptions{
+		LabelSelector: config.KubeZLabelsKey + "=" + config.KubeZLabelsValue,
 	}
-	SecretList, err := clientset.CoreV1().Secrets("").List(context.TODO(), metav1.ListOptions{})
+
+	querySecretList, err := controllers.InclusterKubeSet.CoreV1().Secrets(namespace).List(context.TODO(), listOptions)
 	if err != nil {
-		gins.ReturnErrorData(c, "500", "创建secret失败", err)
+		gins.ReturnErrorData(c, "500", "查询失败", err)
 		c.Abort()
+		return
 	}
-	fmt.Println(SecretList)
-	/// todo
-	gins.ReturnData(c, "200", "ok", nil)
+
+	var secretList models.SecretList
+	var secretdata models.SecretListData
+	for _, v := range querySecretList.Items {
+		secretdata = models.SecretListData{
+			Name:      v.Name,
+			Namespace: v.Namespace,
+		}
+		secretList.AddSecret(secretdata)
+
+	}
+
+	fmt.Println(secretList)
+
+	gins.ReturnData(c, "200", "ok", secretList)
 }
 
 func Get(c *gin.Context) {

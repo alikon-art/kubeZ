@@ -10,17 +10,21 @@ import (
 
 // 可变变量
 var (
-	Port       string
-	JwtSecret  string
-	Username   string
-	Password   string
-	KubeConfig string
+	Port            string
+	JwtSecret       string
+	Username        string
+	Password        string
+	KubeConfig      string
+	TimestampFormat string
+	SetReportCaller bool
 )
 
 // 写死的变量
 var (
-	KubeZNamespace string            = "kubez"
-	KubeZLabels    map[string]string = map[string]string{"app": "kubez"}
+	KubeZNamespace   string            = "kubez"
+	KubeZLabels      map[string]string = map[string]string{"app": "kubez"}
+	KubeZLabelsKey   string            = "app"
+	KubeZLabelsValue string            = "kubez"
 )
 
 func logsinit() {
