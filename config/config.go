@@ -10,10 +10,11 @@ import (
 
 // 可变变量
 var (
-	Port      string
-	JwtSecret string
-	Username  string
-	Password  string
+	Port       string
+	JwtSecret  string
+	Username   string
+	Password   string
+	KubeConfig string
 )
 
 // 写死的变量
@@ -56,9 +57,10 @@ func jwtinit() {
 	JwtSecret = viper.GetString("program.jwtsecret")
 }
 
-func authinit() {
+func programinit() {
 	Username = viper.GetString("program.username")
 	Password = viper.GetString("program.password")
+	KubeConfig = viper.GetString("program.kubeconfig")
 }
 
 func configload() {
@@ -78,6 +80,7 @@ func init() {
 	logsinit()
 	gininit()
 	jwtinit()
-	authinit()
+	programinit()
+
 	logs.Debug(nil, "Config init completed")
 }

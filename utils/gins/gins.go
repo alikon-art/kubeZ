@@ -45,7 +45,7 @@ func ReturnErrorData(c *gin.Context, status string, msg string, err error) {
 	logs.Error(map[string]interface{}{"Error": err.Error()}, msg)
 }
 
-// 从变量初始化clientset的方法
+// 从kubeconfig初始化clientset的方法
 // 若发生错误,此函数会返回错误信息并记录log
 // 传入的kubeconfig应该是base64加密的
 func InitKubeClient(c *gin.Context, kubeconfig string) (clientset *kubernetes.Clientset, err error) {

@@ -16,3 +16,7 @@ func Warning(fields map[string]interface{}, msg string) {
 func Error(fields map[string]interface{}, msg string) {
 	logrus.WithFields(fields).Error(msg)
 }
+
+func Panic(fields map[string]interface{}, msg string) {
+	logrus.WithFields(fields).Panic(msg)
+}

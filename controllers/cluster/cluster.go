@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"kubez_project/config"
+	"kubez_project/controllers"
 	"kubez_project/models"
 	"kubez_project/utils/gins"
 
@@ -21,8 +22,8 @@ func Add(c *gin.Context) {
 		c.Abort()
 		return
 	}
-	// 从结构体创建clientset
-	clientset, err := gins.InitKubeClient(c, clusterDataWConfig.ClusterConfig)
+	// 从结构体创建clientset,测试连通性
+	_, err := gins.InitKubeClient(c, clusterDataWConfig.ClusterConfig)
 	if err != nil {
 		c.Abort()
 		return
@@ -45,7 +46,7 @@ func Add(c *gin.Context) {
 		StringData: data,
 	}
 	// 创建secret
-	createdSecret, err := clientset.CoreV1().Secrets(config.KubeZNamespace).Create(context.TODO(), &secret, metav1.CreateOptions{})
+	createdSecret, err := controllers.InclusterKubeSet.CoreV1().Secrets(config.KubeZNamespace).Create(context.TODO(), &secret, metav1.CreateOptions{})
 	if err != nil {
 		gins.ReturnErrorData(c, "500", "创建secret失败", err)
 		c.Abort()
@@ -66,14 +67,47 @@ func Delete(c *gin.Context) {
 }
 
 func Update(c *gin.Context) {
-	// if true {
-	// 	c.Abort()
-	// }
-	c.Abort()
-	gins.ReturnData(c, "200", "ok", nil)
-
-	// gins.ReturnData(c, "200", "ok", nil)
-	fmt.Println("123")
+	if gins.BoundJson(c, &clusterDataWConfig) != nil {
+		c.Abort()
+		return
+	}
+	// 从结构体创建clientset,测试连通性
+	_, err := gins.InitKubeClient(c, clusterDataWConfig.ClusterConfig)
+	if err != nil {
+		c.Abort()
+		return
+	}
+	// 将结构体的数据转为secret数据
+	data, err := gins.Struct2MapStr(c, clusterDataWConfig)
+	if err != nil {
+		c.Abort()
+		return
+	}
+	// secret对象
+	secret := corev1.Secret{
+		ObjectMeta: metav1.ObjectMeta{
+			Name:      clusterDataWConfig.ClusterID,
+			Namespace: config.KubeZNamespace,
+			Labels:    config.KubeZLabels,
+		},
+		// 将ClusterDataWConfig结构体的所有数据作为secret的data部分
+		// StringData自动base64加密
+		StringData: data,
+	}
+	// 创建secret
+	createdSecret, err := controllers.InclusterKubeSet.CoreV1().Secrets(config.KubeZNamespace).Update(context.TODO(), &secret, metav1.UpdateOptions{})
+	if err != nil {
+		gins.ReturnErrorData(c, "500", "更新secret失败", err)
+		c.Abort()
+		return
+	}
+	// 构建返回data
+	secretinfo, err := gins.Struct2MapInterface(c, createdSecret)
+	if err != nil {
+		c.Abort()
+		return
+	}
+	gins.ReturnData(c, "200", "更新集群成功", secretinfo)
 }
 
 func List(c *gin.Context) {
@@ -90,4 +124,9 @@ func List(c *gin.Context) {
 	fmt.Println(SecretList)
 	/// todo
 	gins.ReturnData(c, "200", "ok", nil)
+}
+
+func Get(c *gin.Context) {
+	// clusterid := c.Query("clusterid")
+
 }
