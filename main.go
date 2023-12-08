@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"kubez_project/config"
+
 	// "kubez_project/middlewares"
 	"kubez_project/routers"
 	"kubez_project/utils/jwts"
@@ -14,6 +15,12 @@ import (
 func main() {
 	logs.Info(nil, "test")
 	fmt.Println(config.JwtSecret)
+	defer func() {
+		if r := recover(); r != nil {
+			// 处理panic错误，例如打印错误信息或记录日志
+			fmt.Println("Recovered from panic:", r)
+		}
+	}()
 
 	token, _ := jwts.GenToken("admin")
 	clam, err := jwts.ParseToken(token)

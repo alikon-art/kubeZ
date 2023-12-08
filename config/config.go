@@ -8,12 +8,18 @@ import (
 	"github.com/spf13/viper"
 )
 
+// 可变变量
 var (
-	Port           string
-	JwtSecret      string
-	Username       string
-	Password       string
-	KubeZNamespace string
+	Port      string
+	JwtSecret string
+	Username  string
+	Password  string
+)
+
+// 写死的变量
+var (
+	KubeZNamespace string            = "kubez"
+	KubeZLabels    map[string]string = map[string]string{"app": "kubez"}
 )
 
 func logsinit() {

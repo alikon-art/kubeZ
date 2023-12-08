@@ -7,6 +7,12 @@ type ReturnData struct {
 	Data    map[string]interface{} `json:"data"`
 }
 
+// 处理用户登录信息的结构体
+type UserInfo struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+}
+
 // 处理集群数据的基本结构体
 type ClusterData struct {
 	ClusterID   string                 `json:"clusterid"`
