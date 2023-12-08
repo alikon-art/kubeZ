@@ -2,7 +2,7 @@ package routers
 
 import (
 	"kubez_project/routers/auth"
-	"kubez_project/routers/cluster"
+	clusters "kubez_project/routers/cluster"
 
 	"github.com/gin-gonic/gin"
 )

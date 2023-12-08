@@ -26,8 +26,8 @@ func main() {
 	clam, err := jwts.ParseToken(token)
 	fmt.Println(clam, err)
 
-	r := gin.Default()
-	routers.RegisterRouters(r)
-	// r.Use(middlewares.JwtCheck)
-	r.Run()
-}
+// 	r := gin.Default()
+// 	routers.RegisterRouters(r)
+// 	r.Use(middlewares.JwtCheck)
+// 	r.Run()
+// }
