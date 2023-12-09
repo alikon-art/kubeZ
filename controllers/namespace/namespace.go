@@ -2,6 +2,7 @@ package namespace
 
 import (
 	"context"
+	// "kubez_project/config"
 	"kubez_project/config"
 	"kubez_project/models"
 	"kubez_project/utils/gins"
@@ -22,22 +23,19 @@ import (
 
 // metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
+var namespaceItem corev1.Namespace
+
 func Add(c *gin.Context) {
-	var requestData models.RequestData
-	err := gins.BoundJson(c, &requestData)
+
+	clientset, requestData, err := gins.BoundJsonAndInitClientSet(c, &namespaceItem)
 	if err != nil {
 		return
 	}
 
-	// 从controllers去对应集群的clientset
-	clientset, err := gins.GetOutOfClusterClientSet(c, requestData.ClusterID)
-	if err != nil {
-		return
-	}
+	namespaceItem.SetName(requestData.Name)
+	namespaceItem.SetLabels(requestData.Labels)
 
-	namespace := corev1.Namespace{}
-	namespace.SetName(requestData.Name)
-	_, err = clientset.CoreV1().Namespaces().Create(context.TODO(), &namespace, metav1.CreateOptions{})
+	_, err = clientset.CoreV1().Namespaces().Create(context.TODO(), &namespaceItem, metav1.CreateOptions{})
 	if err != nil {
 		gins.ReturnErrorData(c, "500", "创建namespace失败", err)
 		return
@@ -48,14 +46,7 @@ func Add(c *gin.Context) {
 }
 
 func Delete(c *gin.Context) {
-	var requestData models.RequestData
-	err := gins.BoundJson(c, &requestData)
-	if err != nil {
-		return
-	}
-
-	// 从controllers去对应集群的clientset
-	clientset, err := gins.GetOutOfClusterClientSet(c, requestData.ClusterID)
+	clientset, requestData, err := gins.BoundJsonAndInitClientSet(c, &namespaceItem)
 	if err != nil {
 		return
 	}
@@ -71,18 +62,24 @@ func Delete(c *gin.Context) {
 }
 
 func Update(c *gin.Context) {
-	// ns能更新啥?
-}
-
-func List(c *gin.Context) {
-	var requestData models.RequestData
-	err := gins.BoundJson(c, &requestData)
+	clientset, requestData, err := gins.BoundJsonAndInitClientSet(c, &namespaceItem)
 	if err != nil {
 		return
 	}
 
-	// 从controllers去对应集群的clientset
-	clientset, err := gins.GetOutOfClusterClientSet(c, requestData.ClusterID)
+	namespaceItem.SetLabels(requestData.Labels)
+
+	_, err = clientset.CoreV1().Namespaces().Update(context.TODO(), &namespaceItem, metav1.UpdateOptions{})
+	if err != nil {
+		gins.ReturnErrorData(c, "500", "更新namespace失败", err)
+		return
+	}
+	gins.ReturnData(c, "200", "更新namespace成功", nil)
+}
+
+func List(c *gin.Context) {
+
+	clientset, _, err := gins.BoundJsonAndInitClientSet(c, &namespaceItem)
 	if err != nil {
 		return
 	}
@@ -93,13 +90,14 @@ func List(c *gin.Context) {
 		return
 	}
 
-	returnList := models.ReturnList{}
+	returnList := models.BasicReturnList{}
 	for _, v := range namespaceList.Items {
-		returnListData := models.ReturnListData{
+		returnListData := models.BasicReturn{
 			Name:       v.Name,
+			Labels:     v.Labels,
 			CreateTime: v.CreationTimestamp.Format(config.TimestampFormat),
 		}
-		returnList.AddReturnListData(returnListData)
+		returnList.AddBasicReturn(returnListData)
 	}
 
 	gins.ReturnData(c, "200", "ok", returnList)
@@ -107,14 +105,7 @@ func List(c *gin.Context) {
 }
 
 func Get(c *gin.Context) {
-	var requestData models.RequestData
-	err := gins.BoundJson(c, &requestData)
-	if err != nil {
-		return
-	}
-
-	// 从controllers去对应集群的clientset
-	clientset, err := gins.GetOutOfClusterClientSet(c, requestData.ClusterID)
+	clientset, requestData, err := gins.BoundJsonAndInitClientSet(c, &namespaceItem)
 	if err != nil {
 		return
 	}

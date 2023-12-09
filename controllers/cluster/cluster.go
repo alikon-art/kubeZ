@@ -163,7 +163,7 @@ func List(c *gin.Context) {
 }
 
 func Get(c *gin.Context) {
-	var requestData models.RequestData
+	var requestData models.RequestDataFrame
 	err := gins.BoundJson(c, &requestData)
 	if err != nil {
 		return

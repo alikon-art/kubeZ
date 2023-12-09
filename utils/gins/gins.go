@@ -25,8 +25,9 @@ func BoundJson(c *gin.Context, any interface{}) (err error) {
 	return err
 }
 
+// 基于通用返回框架的返回方法
 func ReturnData(c *gin.Context, status string, msg string, data interface{}) {
-	returnData := models.ReturnData{
+	returnData := models.ReturnDataFrame{
 		Status:  status,
 		Message: msg,
 		Data:    data,
@@ -89,8 +90,8 @@ func Struct2MapInterface(c *gin.Context, s interface{}) (m map[string]interface{
 }
 
 // 默认状态为200,message为ok,data为空
-func NewReturnData() models.ReturnData {
-	returnData := models.ReturnData{
+func NewReturnData() models.ReturnDataFrame {
+	returnData := models.ReturnDataFrame{
 		Status:  "200",
 		Message: "ok",
 		Data:    make(map[string]interface{}),
@@ -119,4 +120,21 @@ func GetOutOfClusterClientSet(c *gin.Context, clientid string) (clientset *kuber
 		return nil, err
 	}
 	return clientset, err
+}
+
+// 这是个很牛逼的函数
+// 绑定json至结构体并根据请求的clusterid获取ClientSet,适用于ReturnDataFrame框架
+// 结构体obj需要传指针!需要传指针!需要传指针!
+func BoundJsonAndInitClientSet(c *gin.Context, obj interface{}) (*kubernetes.Clientset, models.RequestDataFrame, error) {
+	RequestDataFrame := models.RequestDataFrame{}
+	RequestDataFrame.Item = &obj
+	err := BoundJson(c, &RequestDataFrame)
+	if err != nil {
+		return nil, RequestDataFrame, err
+	}
+	clientset, err := GetOutOfClusterClientSet(c, RequestDataFrame.ClusterID)
+	if err != nil {
+		return nil, RequestDataFrame, err
+	}
+	return clientset, RequestDataFrame, err
 }

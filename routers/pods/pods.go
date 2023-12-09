@@ -28,7 +28,7 @@ func Get(podsGroup *gin.RouterGroup) {
 
 func RegisterSubRouters(group *gin.RouterGroup) {
 	// 第二层 : /api/pods
-	podsGroup := group.Group("/pods")
+	podsGroup := group.Group("/pod")
 	// 接口 : /api/pods/add
 	Add(podsGroup)
 	// 接口 : /api/pods/delete
