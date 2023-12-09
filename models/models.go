@@ -7,34 +7,34 @@ type ReturnData struct {
 	Data    interface{} `json:"data"`
 }
 
+// Add,Updata请求通用结构体
+type RequestData struct {
+	ClusterID string            `json:"clusterid"`
+	Name      string            `json:"name"`
+	Namespace string            `json:"namespace"`
+	Labels    map[string]string `json:"labels"`
+}
+
 // 处理用户登录信息的结构体
 type UserInfo struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
-// 以下暂无用处======
-
-// 请求操作多个资源的列表结构体
-type RequestList struct {
-	Resources []RequestListData `json:"resources"`
-}
-
-// 请求操作多个资源的详情结构体
-type RequestListData struct {
-	Name      string            `json:"name"`
-	Namespace string            `json:"namespace"`
-	Labels    map[string]string `json:"labels"`
-}
-
-// 返回操作多个资源的列表结构体
+// List 方法通用返回体
 type ReturnList struct {
-	Resources []RequestListData `json:"resources"`
+	Resources []ReturnListData `json:"resources"`
 }
 
-// 返回操作多个资源的详情结构体
+// List 方法通用返回体数据
 type ReturnListData struct {
-	Name      string            `json:"name"`
-	Namespace string            `json:"namespace"`
-	Labels    map[string]string `json:"labels"`
+	Name       string            `json:"name"`
+	Namespace  string            `json:"namespace"`
+	Labels     map[string]string `json:"labels"`
+	CreateTime string            `json:"createtime"`
+}
+
+// List 结构体添加数据方法
+func (rl *ReturnList) AddReturnListData(returnListData ReturnListData) {
+	rl.Resources = append(rl.Resources, returnListData)
 }

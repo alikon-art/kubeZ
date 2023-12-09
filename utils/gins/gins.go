@@ -2,6 +2,8 @@ package gins
 
 import (
 	// "fmt"
+	"errors"
+	"kubez_project/controllers"
 	"kubez_project/models"
 	"kubez_project/utils/base64s"
 	goclient "kubez_project/utils/go_client"
@@ -105,4 +107,16 @@ func GetClusterVersion(c *gin.Context, clientset *kubernetes.Clientset) (version
 		return "", err
 	}
 	return version, err
+}
+
+// 获取外部集群clientset的方法
+func GetOutOfClusterClientSet(c *gin.Context, clientid string) (clientset *kubernetes.Clientset, err error) {
+	clientset, ok := controllers.OutOfClusterClientSet[clientid]
+	if !ok {
+		err = errors.New("invail clusterid : " + clientid)
+		ReturnErrorData(c, "400", "无法获取clusterset", err)
+		c.Abort()
+		return nil, err
+	}
+	return clientset, err
 }

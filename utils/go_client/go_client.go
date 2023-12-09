@@ -6,6 +6,7 @@ import (
 )
 
 // 从kubeconfig变量初始化clientset的方法
+// 传入解密后的string类型kubeconfig
 func InitKubeClient(kubeconfig string) (*kubernetes.Clientset, error) {
 	config, err := clientcmd.RESTConfigFromKubeConfig([]byte(kubeconfig))
 	if err != nil {

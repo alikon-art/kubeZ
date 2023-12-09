@@ -58,7 +58,7 @@ func Add(c *gin.Context) {
 		StringData: data,
 	}
 	// 创建secret
-	createdSecret, err := controllers.InclusterKubeSet.CoreV1().Secrets(config.KubeZNamespace).Create(context.TODO(), &secret, metav1.CreateOptions{})
+	createdSecret, err := controllers.InclusterClientSet.CoreV1().Secrets(config.KubeZNamespace).Create(context.TODO(), &secret, metav1.CreateOptions{})
 	if err != nil {
 		gins.ReturnErrorData(c, "500", "创建secret失败", err)
 		c.Abort()
@@ -77,7 +77,7 @@ func Add(c *gin.Context) {
 func Delete(c *gin.Context) {
 	clusterid := c.Query("clusterid")
 
-	err := controllers.InclusterKubeSet.CoreV1().Secrets(config.KubeZNamespace).Delete(context.TODO(), clusterid, metav1.DeleteOptions{})
+	err := controllers.InclusterClientSet.CoreV1().Secrets(config.KubeZNamespace).Delete(context.TODO(), clusterid, metav1.DeleteOptions{})
 	if err != nil {
 		gins.ReturnErrorData(c, "500", "删除失败", err)
 		return
@@ -116,7 +116,7 @@ func Update(c *gin.Context) {
 		StringData: data,
 	}
 	// 创建secret
-	createdSecret, err := controllers.InclusterKubeSet.CoreV1().Secrets(config.KubeZNamespace).Update(context.TODO(), &secret, metav1.UpdateOptions{})
+	createdSecret, err := controllers.InclusterClientSet.CoreV1().Secrets(config.KubeZNamespace).Update(context.TODO(), &secret, metav1.UpdateOptions{})
 	if err != nil {
 		gins.ReturnErrorData(c, "500", "更新secret失败", err)
 		c.Abort()
@@ -138,7 +138,7 @@ func List(c *gin.Context) {
 		LabelSelector: config.KubeZLabelsKey + "=" + config.KubeZLabelsValue,
 	}
 
-	querySecretList, err := controllers.InclusterKubeSet.CoreV1().Secrets(config.KubeZNamespace).List(context.TODO(), listOptions)
+	querySecretList, err := controllers.InclusterClientSet.CoreV1().Secrets(config.KubeZNamespace).List(context.TODO(), listOptions)
 	if err != nil {
 		gins.ReturnErrorData(c, "500", "查询失败", err)
 		c.Abort()
@@ -163,9 +163,13 @@ func List(c *gin.Context) {
 }
 
 func Get(c *gin.Context) {
-	clusterid := c.Query("clusterid")
+	var requestData models.RequestData
+	err := gins.BoundJson(c, &requestData)
+	if err != nil {
+		return
+	}
 
-	cluster, err := controllers.InclusterKubeSet.CoreV1().Secrets(config.KubeZNamespace).Get(context.TODO(), clusterid, metav1.GetOptions{})
+	cluster, err := controllers.InclusterClientSet.CoreV1().Secrets(config.KubeZNamespace).Get(context.TODO(), requestData.ClusterID, metav1.GetOptions{})
 	if err != nil {
 		gins.ReturnErrorData(c, "500", "查询失败", err)
 		return

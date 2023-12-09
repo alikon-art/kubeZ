@@ -2,7 +2,9 @@ package routers
 
 import (
 	"kubez_project/routers/auth"
-	clusters "kubez_project/routers/cluster"
+	"kubez_project/routers/clusters"
+	"kubez_project/routers/namespaces"
+	"kubez_project/routers/pods"
 
 	"github.com/gin-gonic/gin"
 )
@@ -12,4 +14,7 @@ func RegisterRouters(g *gin.Engine) {
 	apiGroup := g.Group("/api")
 	auth.RegisterSubRouters(apiGroup)
 	clusters.RegisterSubRouters(apiGroup)
+	namespaces.RegisterSubRouters(apiGroup)
+	pods.RegisterSubRouters(apiGroup)
+
 }

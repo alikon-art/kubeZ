@@ -19,11 +19,11 @@ func Update(clusterGroup *gin.RouterGroup) {
 }
 
 func List(clusterGroup *gin.RouterGroup) {
-	clusterGroup.GET("/list", cluster.List)
+	clusterGroup.POST("/list", cluster.List)
 }
 
 func Get(clusterGroup *gin.RouterGroup) {
-	clusterGroup.GET("/get", cluster.Get)
+	clusterGroup.POST("/get", cluster.Get)
 }
 
 func RegisterSubRouters(group *gin.RouterGroup) {
