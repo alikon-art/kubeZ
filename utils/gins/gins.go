@@ -95,3 +95,14 @@ func NewReturnData() models.ReturnData {
 	}
 	return returnData
 }
+
+// 获取集群版本的方法
+func GetClusterVersion(c *gin.Context, clientset *kubernetes.Clientset) (version string, err error) {
+	version, err = goclient.GetClusterVersion(clientset)
+	if err != nil {
+		ReturnErrorData(c, "500", "获取集群版本失败", err)
+		c.Abort()
+		return "", err
+	}
+	return version, err
+}

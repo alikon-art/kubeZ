@@ -17,6 +17,7 @@ var (
 	KubeConfig      string
 	TimestampFormat string
 	SetReportCaller bool
+	LogLevel        string
 )
 
 // 写死的变量
@@ -28,9 +29,9 @@ var (
 )
 
 func logsinit() {
-	logLevel := viper.GetString("logs.level")
+	LogLevel = viper.GetString("logs.level")
 	// 设置日志级别
-	switch logLevel {
+	switch LogLevel {
 	case "trace":
 		logrus.SetLevel(logrus.TraceLevel)
 	case "debug":
@@ -44,10 +45,10 @@ func logsinit() {
 	}
 	logs.Info(nil, fmt.Sprint("Set log level to : ", logrus.GetLevel()))
 	// 日志中显示文件名
-	SetReportCaller := viper.GetBool("logs.showcaller")
+	SetReportCaller = viper.GetBool("logs.showcaller")
 	logrus.SetReportCaller(SetReportCaller)
 	// 时间显示格式
-	TimestampFormat := viper.GetString("logs.timeformat")
+	TimestampFormat = viper.GetString("logs.timeformat")
 	logrus.SetFormatter(&logrus.JSONFormatter{TimestampFormat: TimestampFormat})
 
 }
@@ -79,12 +80,12 @@ func configload() {
 
 func init() {
 	// 加载程序配置
-	logs.Debug(nil, "Config init...")
+	logs.Info(nil, "加载程序配置")
 	configload()
 	logsinit()
 	gininit()
 	jwtinit()
 	programinit()
 
-	logs.Debug(nil, "Config init completed")
+	logs.Info(nil, "配置加载完成")
 }

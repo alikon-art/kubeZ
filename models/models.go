@@ -13,18 +13,28 @@ type UserInfo struct {
 	Password string `json:"password"`
 }
 
-// 集群List返回数据的结构体
-type ClusterData struct {
-	ClusterID   string                 `json:"clusterid"`
-	ClusterName string                 `json:"clustername"`
-	Annotations map[string]interface{} `json:"annotations"`
-	CreateTime  string                 `json:"createtime"`
+// 以下暂无用处======
+
+// 请求操作多个资源的列表结构体
+type RequestList struct {
+	Resources []RequestListData `json:"resources"`
 }
 
-// 集群Add,Update传入数据的结构体
-type ClusterDataWConfig struct {
-	ClusterID     string                 `json:"clusterid"`
-	ClusterName   string                 `json:"clustername"`
-	Annotations   map[string]interface{} `json:"annotations"`
-	ClusterConfig string                 `json:"clusterconfig"`
+// 请求操作多个资源的详情结构体
+type RequestListData struct {
+	Name      string            `json:"name"`
+	Namespace string            `json:"namespace"`
+	Labels    map[string]string `json:"labels"`
+}
+
+// 返回操作多个资源的列表结构体
+type ReturnList struct {
+	Resources []RequestListData `json:"resources"`
+}
+
+// 返回操作多个资源的详情结构体
+type ReturnListData struct {
+	Name      string            `json:"name"`
+	Namespace string            `json:"namespace"`
+	Labels    map[string]string `json:"labels"`
 }

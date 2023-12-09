@@ -17,3 +17,12 @@ func InitKubeClient(kubeconfig string) (*kubernetes.Clientset, error) {
 	}
 	return clientset, err
 }
+
+// 获取集群版本的方法
+func GetClusterVersion(clientset *kubernetes.Clientset) (version string, err error) {
+	serverVirsion, err := clientset.Discovery().ServerVersion()
+	if err != nil {
+		return "", err
+	}
+	return serverVirsion.String(), err
+}

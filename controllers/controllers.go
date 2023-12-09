@@ -31,6 +31,7 @@ func init() {
 		}
 
 	}
+	// 查询集群版本
 	serverVersion, err := InclusterKubeSet.Discovery().ServerVersion()
 	if err == nil {
 		logs.Info(nil, "集群版本 : "+serverVersion.String())

@@ -23,7 +23,7 @@ func List(clusterGroup *gin.RouterGroup) {
 }
 
 func Get(clusterGroup *gin.RouterGroup) {
-	clusterGroup.GET("/get", cluster.List)
+	clusterGroup.GET("/get", cluster.Get)
 }
 
 func RegisterSubRouters(group *gin.RouterGroup) {
