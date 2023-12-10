@@ -9,7 +9,7 @@ type ReturnDataFrame struct {
 }
 
 // 基础返回格式,拼接于ReturnDataFrame.Data内
-// List方法仅填充基础字段,GET方法返回Item对象
+// List方法仅填充基础字段,GET方法,返回Item对象
 type BasicReturn struct {
 	ClusterID  string            `json:"clusterid"`
 	Name       string            `json:"name"`
@@ -19,7 +19,7 @@ type BasicReturn struct {
 	Item       interface{}       `json:"item"`
 }
 
-// 基础返回的列表形式
+// 基础返回的列表形式,用于List方法
 type BasicReturnList struct {
 	Items []BasicReturn `json:"items"`
 }
@@ -30,7 +30,7 @@ func (brl *BasicReturnList) AddBasicReturn(br BasicReturn) {
 }
 
 // 请求数据的通用框架
-// List方法仅填充基础字段,Add.Updata方法携带Item对象
+// List,Delete,Get方法仅填充基础字段,Add.Updata方法携带Item对象
 type RequestDataFrame struct {
 	ClusterID string            `json:"clusterid"`
 	Name      string            `json:"name"`

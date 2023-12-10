@@ -1,6 +1,9 @@
 package goclient
 
 import (
+	"fmt"
+	"strings"
+
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 )
@@ -26,4 +29,15 @@ func GetClusterVersion(clientset *kubernetes.Clientset) (version string, err err
 		return "", err
 	}
 	return serverVirsion.String(), err
+}
+
+// 将 map[string]string形式的label转为符合LabelSelector的格式
+func Convert2LabelSelector(labels map[string]string) string {
+	var selectorParts []string
+
+	for key, value := range labels {
+		selectorParts = append(selectorParts, fmt.Sprintf("%s=%s", key, value))
+	}
+
+	return strings.Join(selectorParts, ",")
 }

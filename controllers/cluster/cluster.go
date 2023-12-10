@@ -6,6 +6,7 @@ import (
 	"kubez_project/controllers"
 	"kubez_project/models"
 	"kubez_project/utils/gins"
+	"kubez_project/utils/logs"
 
 	// 	appsv1 "k8s.io/api/apps/v1"
 	"github.com/gin-gonic/gin"
@@ -15,7 +16,7 @@ import (
 
 var clusterDataWConfig models.ClusterDataWConfig
 
-// add方法会验证集群连通性,并获取集群版本
+// add方法会验证集群连通性,并获取集群版本,然后将生成的clientset放入缓存中
 func Add(c *gin.Context) {
 	// 绑定json到结构体
 	if gins.BoundJson(c, &clusterDataWConfig) != nil {
@@ -57,6 +58,7 @@ func Add(c *gin.Context) {
 		// StringData自动base64加密
 		StringData: data,
 	}
+
 	// 创建secret
 	createdSecret, err := controllers.InclusterClientSet.CoreV1().Secrets(config.KubeZNamespace).Create(context.TODO(), &secret, metav1.CreateOptions{})
 	if err != nil {
@@ -64,12 +66,20 @@ func Add(c *gin.Context) {
 		c.Abort()
 		return
 	}
+
 	// 构建返回data
 	secretinfo, err := gins.Struct2MapInterface(c, createdSecret)
 	if err != nil {
 		c.Abort()
 		return
 	}
+
+	// 将cluseterset放入缓存
+	controllers.OutOfClusterClientSet[clusterDataWConfig.ClusterID] = clusterset
+	if controllers.OutOfClusterClientSet[clusterDataWConfig.ClusterID] != nil {
+		logs.Info(nil, "已存储"+clusterDataWConfig.ClusterID+"的clusterset")
+	}
+
 	gins.ReturnData(c, "200", "添加集群成功", secretinfo)
 
 }
