@@ -14,12 +14,12 @@ import (
 
 func Add(c *gin.Context) {
 	var podItem corev1.Pod
-	clientset, requestData, err := gins.BoundJsonAndInitClientSet(c, &podItem)
+	clientset, _, err := gins.BoundJsonAndInitClientSet(c, &podItem)
 	if err != nil {
 		return
 	}
 
-	_, err = clientset.CoreV1().Pods(requestData.Namespace).Create(context.TODO(), &podItem, metav1.CreateOptions{})
+	_, err = clientset.CoreV1().Pods(podItem.Namespace).Create(context.TODO(), &podItem, metav1.CreateOptions{})
 	if err != nil {
 		gins.ReturnErrorData(c, "500", "创建pod失败", err)
 		return
@@ -46,12 +46,12 @@ func Delete(c *gin.Context) {
 
 func Update(c *gin.Context) {
 	var podItem corev1.Pod
-	clientset, requestData, err := gins.BoundJsonAndInitClientSet(c, &podItem)
+	clientset, _, err := gins.BoundJsonAndInitClientSet(c, &podItem)
 	if err != nil {
 		return
 	}
 
-	_, err = clientset.CoreV1().Pods(requestData.Namespace).Update(context.TODO(), &podItem, metav1.UpdateOptions{})
+	_, err = clientset.CoreV1().Pods(podItem.Namespace).Update(context.TODO(), &podItem, metav1.UpdateOptions{})
 	if err != nil {
 		gins.ReturnErrorData(c, "500", "更新pod失败", err)
 		return
