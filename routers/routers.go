@@ -3,6 +3,7 @@ package routers
 import (
 	"kubez_project/routers/auth"
 	"kubez_project/routers/clusters"
+	"kubez_project/routers/deployments"
 	"kubez_project/routers/namespaces"
 	"kubez_project/routers/pods"
 
@@ -16,5 +17,6 @@ func RegisterRouters(g *gin.Engine) {
 	clusters.RegisterSubRouters(apiGroup)
 	namespaces.RegisterSubRouters(apiGroup)
 	pods.RegisterSubRouters(apiGroup)
+	deployments.RegisterSubRouters(apiGroup)
 
 }
