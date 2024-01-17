@@ -12,7 +12,9 @@ import (
 
 func RegisterRouters(g *gin.Engine) {
 	// 第一层 : /api
+	// 注册api组
 	apiGroup := g.Group("/api")
+	// 向组中添加子组
 	auth.RegisterSubRouters(apiGroup)
 	clusters.RegisterSubRouters(apiGroup)
 	namespaces.RegisterSubRouters(apiGroup)
