@@ -157,6 +157,7 @@ func List(c *gin.Context) {
 
 	var clusterList models.ClusterList
 	var clusterdata models.ClusterListData
+
 	for _, v := range querySecretList.Items {
 		clusterdata = models.ClusterListData{
 			ClusterID:   v.Name,

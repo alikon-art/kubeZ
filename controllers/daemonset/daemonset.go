@@ -91,6 +91,7 @@ func List(c *gin.Context) {
 			Namespace:  daemonset.Namespace,
 			Labels:     daemonset.Labels,
 			CreateTime: daemonset.CreationTimestamp.Format(config.TimestampFormat),
+			Item:       daemonset,
 		}
 		returnDataList.AddBasicReturn(returnData)
 	}

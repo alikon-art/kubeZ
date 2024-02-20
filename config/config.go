@@ -20,7 +20,7 @@ var (
 	LogLevel        string
 )
 
-// 写死的变量
+// 这是一堆写死的变量,用于在集群内创建,查询本平台所使用的资源
 var (
 	KubeZNamespace   string            = "kubez"
 	KubeZLabels      map[string]string = map[string]string{"app": "kubez"}

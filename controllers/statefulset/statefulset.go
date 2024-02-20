@@ -88,6 +88,7 @@ func List(c *gin.Context) {
 			Namespace:  statefulSet.Namespace,
 			Labels:     statefulSet.Labels,
 			CreateTime: statefulSet.CreationTimestamp.Format(config.TimestampFormat),
+			Item:       statefulSet,
 		}
 		returnDataList.AddBasicReturn(returnData)
 	}

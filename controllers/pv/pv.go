@@ -87,6 +87,7 @@ func List(c *gin.Context) {
 			Name:       pv.Name,
 			Labels:     pv.Labels,
 			CreateTime: pv.CreationTimestamp.Format(config.TimestampFormat),
+			Item:       pv,
 		}
 		returnDataList.AddBasicReturn(returnData)
 	}

@@ -90,6 +90,7 @@ func List(c *gin.Context) {
 			Namespace:  ingress.Namespace,
 			Labels:     ingress.Labels,
 			CreateTime: ingress.CreationTimestamp.Format(config.TimestampFormat),
+			Item:       ingress,
 		}
 		returnDataList.AddBasicReturn(returnData)
 	}

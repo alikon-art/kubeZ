@@ -88,6 +88,7 @@ func List(c *gin.Context) {
 			Namespace:  configMap.Namespace,
 			Labels:     configMap.Labels,
 			CreateTime: configMap.CreationTimestamp.Format(config.TimestampFormat),
+			Item:       configMap,
 		}
 		returnDataList.AddBasicReturn(returnData)
 	}

@@ -88,6 +88,7 @@ func List(c *gin.Context) {
 			Namespace:  secret.Namespace,
 			Labels:     secret.Labels,
 			CreateTime: secret.CreationTimestamp.Format(config.TimestampFormat),
+			Item:       secret,
 		}
 		returnDataList.AddBasicReturn(returnData)
 	}

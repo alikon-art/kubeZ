@@ -88,6 +88,7 @@ func List(c *gin.Context) {
 			Namespace:  pvc.Namespace,
 			Labels:     pvc.Labels,
 			CreateTime: pvc.CreationTimestamp.Format(config.TimestampFormat),
+			Item:       pvc,
 		}
 		returnDataList.AddBasicReturn(returnData)
 	}

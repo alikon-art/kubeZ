@@ -90,6 +90,7 @@ func List(c *gin.Context) {
 			Namespace:  service.Namespace,
 			Labels:     service.Labels,
 			CreateTime: service.CreationTimestamp.Format(config.TimestampFormat),
+			Item:       service,
 		}
 		returnDataList.AddBasicReturn(returnData)
 	}

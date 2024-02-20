@@ -9,6 +9,7 @@ import (
 	"kubez_project/routers/deployments"
 	"kubez_project/routers/ingresses"
 	"kubez_project/routers/namespaces"
+	"kubez_project/routers/nodes"
 	"kubez_project/routers/pods"
 	"kubez_project/routers/pvcs"
 	"kubez_project/routers/pvs"
@@ -28,6 +29,7 @@ func RegisterRouters(g *gin.Engine) {
 	auth.RegisterSubRouters(apiGroup)
 	// 集群管理
 	clusters.RegisterSubRouters(apiGroup)
+	nodes.RegisterSubRouters(apiGroup)
 	namespaces.RegisterSubRouters(apiGroup)
 	// 工作负载
 	pods.RegisterSubRouters(apiGroup)

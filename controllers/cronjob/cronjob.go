@@ -90,6 +90,7 @@ func List(c *gin.Context) {
 			Namespace:  job.Namespace,
 			Labels:     job.Labels,
 			CreateTime: job.CreationTimestamp.Format(config.TimestampFormat),
+			Item:       job,
 		}
 		returnDataList.AddBasicReturn(returnData)
 	}

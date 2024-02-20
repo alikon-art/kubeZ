@@ -96,6 +96,7 @@ func List(c *gin.Context) {
 			Name:       v.Name,
 			Labels:     v.Labels,
 			CreateTime: v.CreationTimestamp.Format(config.TimestampFormat),
+			Item:       v,
 		}
 		returnList.AddBasicReturn(returnListData)
 	}

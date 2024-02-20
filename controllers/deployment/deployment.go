@@ -89,6 +89,7 @@ func List(c *gin.Context) {
 			Namespace:  deployment.Namespace,
 			Labels:     deployment.Labels,
 			CreateTime: deployment.CreationTimestamp.Format(config.TimestampFormat),
+			Item:       deployment,
 		}
 		returnDataList.AddBasicReturn(returnData)
 	}

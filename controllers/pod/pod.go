@@ -86,6 +86,7 @@ func List(c *gin.Context) {
 			Namespace:  pod.Namespace,
 			Labels:     pod.Labels,
 			CreateTime: pod.CreationTimestamp.Format(config.TimestampFormat),
+			Item:       pod,
 		}
 		returnDataList.AddBasicReturn(returnData)
 	}
