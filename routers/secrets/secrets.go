@@ -11,7 +11,7 @@ func RegisterSubRouters(group *gin.RouterGroup) {
 	// 第二层 : /api/secrets
 	secretsGroup := group.Group("/secret")
 	// 接口 : /api/secrets/create
-	secretsGroup.POST("/create", secret.Create)
+	secretsGroup.POST("/add", secret.Create)
 	// 接口 : /api/secrets/delete
 	secretsGroup.POST("/delete", secret.Delete)
 	// 接口 : /api/secrets/update
