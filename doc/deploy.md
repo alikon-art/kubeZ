@@ -21,8 +21,8 @@ data:
       jwtsecret: jwtHello
       username: admin
       password: 123
-      kubeconfig: ===== ## 你的k8s集群的kubeconfig,base64格式
-      
+      kubeconfig: 你的base64格式kubeconfig
+       
 immutable: false
 ---
 apiVersion: apps/v1
@@ -46,49 +46,24 @@ spec:
       annotations:
         app: kubez
     spec:
-      affinity:
-        podAntiAffinity: {}
       restartPolicy: Always
-      imagePullSecrets: []
       dnsPolicy: ClusterFirst
-      hostNetwork: false
       volumes:
         - name: kubez-config
           configMap:
             name: kubez-configmap
             defaultMode: 420
-            items: []
             optional: true
       containers:
         - name: kubez
           image: reactive0/kubez:0.0.1
-          tty: false
-          workingDir: ''
           imagePullPolicy: IfNotPresent
-          resources:
-            limits:
-              memory: 1024Mi
-              cpu: 1
-            requests:
-              memory: 128Mi
-              cpu: 100m
-          ports: []
-          lifecycle: {}
           volumeMounts:
             - name: kubez-config
               mountPath: /kubez/config.yaml
               subPath: config.yaml
-              readonly: false
-          env: []
-          envFrom: []
-      initContainers: []
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxSurge: 25%
-      maxUnavailable: 25%
---- 
 
+---
 apiVersion: v1
 kind: Service
 metadata:
@@ -98,7 +73,7 @@ metadata:
   annotations: {}
 spec:
   ports:
-    - port: 80
+    - port: 8080
       targetPort: 8080
       protocol: TCP
       name: kubez
@@ -106,6 +81,7 @@ spec:
     app: kubez
   type: ClusterIP
   sessionAffinity: None
+
 ```
 
 
@@ -172,4 +148,6 @@ spec:
   progressDeadlineSeconds: 600
 ```
 
-之后访问nodeport对应的端口,再在集群管理中添加集群即可
+之后访问nodeport对应的端口,再在集群管理中添加集群即可,kubeconfig同样是base64格式
+
+添加完集群后如果不能访问,请重启后端服务的pod
