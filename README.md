@@ -1,8 +1,8 @@
 # KubeZ - 多集群k8s管理平台
 KubeZ是一个多集群k8s管理平台,采用前后端分离架构,使用vue和go编写,可以简化k8s操作难度
 
+这里是后端仓库,前端仓库在[这里](https://github.com/alikon-art/KubeZ-frontend)
 演示地址：[演示地址](http://107.148.0.71:32759/)
-
 部署文档：[deploy.md](doc/deploy.md)
 
 前端栈：vue3，element-plus，axios，pinia，vue-route
