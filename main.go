@@ -14,11 +14,13 @@ import (
 func main() {
 	fmt.Println(config.TimestampFormat)
 	r := gin.Default()
-	// r.Use(middlewares.JwtCheck)
 
 	// 使用CORS中间件来配置跨域选项
 	corsConfig := middlewares.GetCORSConfig()
 	r.Use(cors.New(corsConfig))
+
+	// 使用JWT中间件来验证token
+	r.Use(middlewares.JwtCheck)
 
 	routers.RegisterRouters(r)
 	r.Run()

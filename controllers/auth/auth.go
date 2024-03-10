@@ -18,6 +18,8 @@ func Login(c *gin.Context) {
 
 	if userInfo.Username != config.Username || userInfo.Password != config.Password {
 		gins.ReturnErrorData(c, "401", "用户名或密码错误", errors.New("用户名或密码错误"))
+		c.Abort()
+		return
 	}
 
 	// 验证密码正确
