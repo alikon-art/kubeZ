@@ -19,7 +19,7 @@ func GenToken(username string) (token string, err error) {
 	claim := MyCustomClaims{
 		Username: username,
 		RegisteredClaims: jwt.RegisteredClaims{
-			Issuer:    "Auth_Server",                                      // 签发者
+			Issuer:    "KubeZ_Server",                                     // 签发者
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(24 * time.Hour)), //过期时间
 			NotBefore: jwt.NewNumericDate(time.Now()),                     //最早使用时间
 			IssuedAt:  jwt.NewNumericDate(time.Now()),                     //签发时间
