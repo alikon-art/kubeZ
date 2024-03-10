@@ -69,7 +69,7 @@ spec:
             optional: true
       containers:
         - name: kubez
-          image: reactive0/kubez:0.0.1
+          image: reactive0/kubez:latest
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: kubez-config
@@ -94,3 +94,62 @@ spec:
     app: kubez
   type: ClusterIP
   sessionAffinity: None
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: kubez-frontend
+  namespace: default
+  labels:
+    app: kubez-frontend
+spec:
+  ports:
+    - name: kubez-frontend
+      protocol: TCP
+      port: 8080
+      targetPort: 80
+      nodePort: 30261
+  selector:
+    app: kubez-frontend
+  type: NodePort
+  sessionAffinity: None
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kubez-frontend
+  namespace: default
+  labels:
+    app: kubez-frontend
+  annotations:
+    app: kubez-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: kubez-frontend
+  template:
+      labels:
+        app: kubez-frontend
+      annotations:
+        app: kubez-frontend
+    spec:
+      containers:
+        - name: kubez-frontend
+          image: reactive0/kubez_frontend:lastest
+          ports:
+            - name: kubez-frontend
+              containerPort: 80
+              protocol: TCP
+          imagePullPolicy: Always
+      restartPolicy: Always
+      terminationGracePeriodSeconds: 30
+      dnsPolicy: ClusterFirst
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 25%
+  revisionHistoryLimit: 10
+  progressDeadlineSeconds: 600
