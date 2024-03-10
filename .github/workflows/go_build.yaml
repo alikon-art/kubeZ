@@ -17,11 +17,21 @@ jobs:
         run: go get .
 
       - name: Build
-        run: go build -v .
+        run: go build -v -o kubez . 
 
       - name: ls
         run: ls
 
       - name: ls
         run: ls ${{ github.workspace }}
-        
+
+      - name: login docker
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+
