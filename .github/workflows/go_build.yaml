@@ -28,12 +28,14 @@ jobs:
       - name: login docker
         uses: docker/login-action@v3
         with:
-          username: ${{ secrets.DOCKER_PASSWORD }}
-          password: ${{ secrets.DOCKER_USERNAME }}
+          # username: ${{ secrets.DOCKER_PASSWORD }}
+          # password: ${{ secrets.DOCKER_USERNAME }}
+          username: qd915149091@gmail.com
+          password: Zjw0318Zzj!
 
       - name: docker meta
         id: meta
         uses: docker/metadata-action@v5
-        
+
         
 
