@@ -56,7 +56,7 @@ spec:
             optional: true
       containers:
         - name: kubez
-          image: reactive0/kubez:0.0.1
+          image: reactive0/kubez:lastest
           imagePullPolicy: IfNotPresent
           volumeMounts:
             - name: kubez-config
@@ -69,8 +69,6 @@ kind: Service
 metadata:
   name: kubez
   namespace: default
-  labels: {}
-  annotations: {}
 spec:
   ports:
     - port: 8080
@@ -81,7 +79,21 @@ spec:
     app: kubez
   type: ClusterIP
   sessionAffinity: None
-
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  labels:
+    app: kubez
+  name: admin
+  namespace: kubez
+type: Opaque
+stringData:
+  annotations: bWFwWzEyMzo0NTZd
+  clusterconfig: ====
+  clusterid: cluster1
+  clustername: 集群1
+  version: v1.28
 ```
 
 
@@ -130,7 +142,7 @@ spec:
     spec:
       containers:
         - name: kubez-frontend
-          image: reactive0/kubez_frontend:0.0.1
+          image: reactive0/kubez_frontend:lastest
           ports:
             - name: kubez-frontend
               containerPort: 80
