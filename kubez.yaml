@@ -153,4 +153,8 @@ spec:
       maxUnavailable: 25%
       maxSurge: 25%
   revisionHistoryLimit: 10
+<<<<<<< HEAD
   progressDeadlineSeconds: 600
+=======
+  progressDeadlineSeconds: 600
+>>>>>>> 469d334d01a489e48813f30942e9e667ec8b5f64
